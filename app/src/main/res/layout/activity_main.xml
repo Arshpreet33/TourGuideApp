@@ -8,7 +8,7 @@
     tools:context="MainActivity">
 
     <TextView
-        android:id="@+id/textViewtourguide"
+        android:id="@+id/lblTourGuide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TOUR GUIDE"
@@ -20,7 +20,7 @@
         app:layout_constraintVertical_bias="0.075" />
 
     <TextView
-        android:id="@+id/usernameid"
+        android:id="@+id/lblUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Username"
@@ -33,7 +33,7 @@
         app:layout_constraintVertical_bias="0.199" />
 
     <TextView
-        android:id="@+id/text"
+        android:id="@+id/lblPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Password"
@@ -46,7 +46,7 @@
         app:layout_constraintVertical_bias="0.342" />
 
     <EditText
-        android:id="@+id/editTextusername"
+        android:id="@+id/txtUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -59,7 +59,7 @@
         app:layout_constraintVertical_bias="0.188" />
 
     <EditText
-        android:id="@+id/editTextpassword"
+        android:id="@+id/txtPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -72,7 +72,7 @@
         app:layout_constraintVertical_bias="0.335" />
 
     <Button
-        android:id="@+id/Loginid"
+        android:id="@+id/btnLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="LOGIN"
@@ -83,7 +83,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="OR"
@@ -96,7 +95,7 @@
         app:layout_constraintVertical_bias="0.616" />
 
     <Button
-        android:id="@+id/SingUpid"
+        android:id="@+id/btnSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="SignUp"
