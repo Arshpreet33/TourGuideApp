@@ -8,7 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class SignUpActivity extends AppCompatActivity {
-TextView FirstNameSignup,LastNameSignup,EmailSingup,PhoneSignup;
+TextView FirstNameSignup,LastNameSignup,EmailSingup,PhoneSignup,radioview;
 Button Signupbtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +19,7 @@ Button Signupbtn;
         LastNameSignup=findViewById(R.id.lastname);
         EmailSingup=findViewById(R.id.textViewemail);
         PhoneSignup=findViewById(R.id.textViewphone);
+        radioview=findViewById(R.id.textViewgender);
 
 
         Signupbtn.setOnClickListener(new View.OnClickListener() {
