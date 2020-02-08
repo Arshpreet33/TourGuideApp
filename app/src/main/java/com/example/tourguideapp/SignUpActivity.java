@@ -19,7 +19,6 @@ Button Signupbtn;
         LastNameSignup=findViewById(R.id.lastname);
         EmailSingup=findViewById(R.id.textViewemail);
         PhoneSignup=findViewById(R.id.textViewphone);
-        radioview=findViewById(R.id.textViewgender);
 
 
         Signupbtn.setOnClickListener(new View.OnClickListener() {
