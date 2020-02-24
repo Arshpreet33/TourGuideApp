@@ -5,11 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class SignUpActivity extends AppCompatActivity {
 TextView FirstNameSignup,LastNameSignup,EmailSingup,PhoneSignup,radioview;
 Button Signupbtn;
+FireBaseAuth Fauth;
+ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
