@@ -50,7 +50,7 @@
             app:layout_constraintVertical_bias="0.46" />
 
         <EditText
-            android:id="@+id/editTextfirstname"
+            android:id="@+id/textFirstNameProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -63,7 +63,7 @@
             app:layout_constraintVertical_bias="0.284" />
 
         <EditText
-            android:id="@+id/editTextlastname"
+            android:id="@+id/textLastNameProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -77,7 +77,7 @@
 
 
         <RadioButton
-            android:id="@+id/radioButtonmale"
+            android:id="@+id/radioGenderMale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Male"
@@ -89,7 +89,7 @@
             app:layout_constraintVertical_bias="0.559" />
 
         <RadioButton
-            android:id="@+id/radioButtonfemale"
+            android:id="@+id/radioGenderFemale"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Female"
@@ -128,7 +128,7 @@
             app:layout_constraintVertical_bias="0.687" />
 
         <EditText
-            android:id="@+id/editTextemail"
+            android:id="@+id/textEmailProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -154,7 +154,7 @@
             app:layout_constraintVertical_bias="0.773" />
 
         <EditText
-            android:id="@+id/editTextphone"
+            android:id="@+id/textPhone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -180,7 +180,7 @@
             app:layout_constraintVertical_bias="0.067" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btnEditProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="EDIT"
@@ -205,4 +205,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.022" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

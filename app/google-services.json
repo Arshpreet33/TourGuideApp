@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "328054567180",
+    "firebase_url": "https://tour-guide-application.firebaseio.com",
+    "project_id": "tour-guide-application",
+    "storage_bucket": "tour-guide-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:328054567180:android:e9185cd8b5f5376cbf1929",
+        "android_client_info": {
+          "package_name": "com.example.tourguideapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "328054567180-1jf8jdflc63e31nb6v3kqb1qvomtnl2o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiAsnlIPgC5Ph0b0nCg8MemWlYMuR0sMw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "328054567180-1jf8jdflc63e31nb6v3kqb1qvomtnl2o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
