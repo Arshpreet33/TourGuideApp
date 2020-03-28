@@ -27,7 +27,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     Button btnSignUp;
 
     private FirebaseAuth mAuth;
-
     //    FirebaseAuth fAuth;
     ProgressBar progressBar;
     //    FirebaseFirestore fStore;
