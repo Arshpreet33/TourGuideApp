@@ -80,7 +80,6 @@ public class MontrealFragment extends Fragment implements View.OnClickListener {
                 }
 
                 try {
-                    Toast.makeText(getActivity().getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
                     Places places = response.body();
                     placeList = new ArrayList<>(places.getPlaceList());
 
@@ -111,7 +110,7 @@ public class MontrealFragment extends Fragment implements View.OnClickListener {
 
         service = RetrofitClientInstance.getRetrofitInstance().create(DataServices.class);
 
-        Call<Places> call = service.executeSearchPlaces(searchedText);
+        Call<Places> call = service.executeSearchPlaces(searchedText, 1);
 
         call.enqueue(new Callback<Places>() {
             @Override
@@ -122,7 +121,6 @@ public class MontrealFragment extends Fragment implements View.OnClickListener {
                 }
 
                 try {
-                    Toast.makeText(getActivity().getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
                     Places places = response.body();
                     placeList = new ArrayList<>(places.getPlaceList());
 

@@ -1,13 +1,11 @@
 package com.example.tourguideapp;
 
-import com.google.gson.JsonObject;
-
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface DataServices {
 
@@ -23,15 +21,17 @@ public interface DataServices {
     @GET("/user/edit/{userID}")
     Call<UserDetails> executeGetUserProfileByID(@Path(value = "userID", encoded = true) int userID);
 
-    @GET("/place/search/{strPlace}")
-    Call<Places> executeSearchPlaces(@Path(value = "strPlace", encoded = true) String strPlace);
+    @GET("/place/search")
+    Call<Places> executeSearchPlaces(
+            @Query("str") String strPlace,
+            @Query("city") int cityID
+    );
 
     @GET("/place/{placeID}")
     Call<Place> executeGetPlacesByID(@Path(value = "placeID", encoded = true) int placeID);
 
-    @GET("/place/{cityID}")
+    @GET("/place/city/{cityID}")
     Call<Places> executeGetPlacesByCityID(@Path(value = "cityID", encoded = true) int cityID);
-
 
 
 }
