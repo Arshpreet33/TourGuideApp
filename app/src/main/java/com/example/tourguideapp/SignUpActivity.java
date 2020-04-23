@@ -1,6 +1,8 @@
 package com.example.tourguideapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -17,31 +19,48 @@ import retrofit2.Response;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
-    EditText txtFirstName, txtLastName, txtPassword, txtEmail, txtPhone;
+    EditText txtName, txtAddress, txtPassword, txtEmail, txtPhone;
     TextView lblLogin;
     Button btnSignUp;
+    Intent intent;
+
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
 
     DataServices service;
 
+    boolean isLogin;
+    int userID;
+
 //    private FirebaseAuth mAuth;
 //    ProgressBar progressBar;
-
-    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        txtFirstName = findViewById(R.id.txtFirstNameSignUp);
-        txtLastName = findViewById(R.id.txtLastNameSignUp);
+        txtName = findViewById(R.id.txtNameSignUp);
+        txtAddress = findViewById(R.id.txtAddressSignUp);
         txtEmail = findViewById(R.id.txtEmailSignUp);
         txtPhone = findViewById(R.id.txtPhoneSignUp);
         txtPassword = findViewById(R.id.txtPasswordSignUp);
         lblLogin = findViewById(R.id.lblLogin);
-        btnSignUp = findViewById(R.id.btnSignUp);
+        btnSignUp = findViewById(R.id.btnRegister);
 
         btnSignUp.setOnClickListener(this);
         lblLogin.setOnClickListener(this);
+
+        sp = getSharedPreferences(MyVariables.cacheFile, Context.MODE_PRIVATE);
+
+        isLogin = sp.getBoolean(MyVariables.keyLoginAuth, MyVariables.defaultLoginAuth);
+        userID = sp.getInt(MyVariables.keyUserID, MyVariables.defaultUserID);
+
+        if (isLogin && userID > 0) {
+            finish();
+            intent = new Intent(getApplicationContext(), HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
 
 //        mAuth = FirebaseAuth.getInstance();
 //        progressBar = findViewById(R.id.progressBar);
@@ -54,7 +73,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btnSignUp) {
+        if (v.getId() == R.id.btnRegister) {
             btnSignUpClick(v);
         } else if (v.getId() == R.id.lblLogin) {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
@@ -65,8 +84,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
         final String email = txtEmail.getText().toString().trim();
         String password = txtPassword.getText().toString().trim();
-        final String firstName = txtFirstName.getText().toString();
-        final String lastName = txtFirstName.getText().toString();
+        final String name = txtName.getText().toString();
+        final String address = txtAddress.getText().toString();
         final String phone = txtPhone.getText().toString();
 
         if (TextUtils.isEmpty(email)) {
@@ -85,24 +104,32 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         LoginDetails loginDetails = new LoginDetails(email, password);
-        loginDetails.setUser(new UserDetails(firstName, email, phone, ""));
+        loginDetails.setUser(new UserDetails(name, email, phone, address));
 
         service = RetrofitClientInstance.getRetrofitInstance().create(DataServices.class);
 
-        Call<String> call = service.executeSignUp(loginDetails);
+        Call<UserDetails> call = service.executeSignUp(loginDetails);
 
-        call.enqueue(new Callback<String>() {
+        call.enqueue(new Callback<UserDetails>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<UserDetails> call, Response<UserDetails> response) {
                 if (!response.isSuccessful()) {
                     Toast.makeText(SignUpActivity.this, response.code(), Toast.LENGTH_SHORT).show();
                     return;
                 }
+                UserDetails userDetails = response.body();
 
-                if (response.body().equals("Already registered")) {
+                if (userDetails.getStr().equals("Already registered")) {
                     Toast.makeText(SignUpActivity.this, "This email is already registered.", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                Toast.makeText(SignUpActivity.this, userDetails.getStr(), Toast.LENGTH_SHORT).show();
+
+                editor = sp.edit();
+                editor.putBoolean(MyVariables.keyLoginAuth, true);
+                editor.putInt(MyVariables.keyUserID, userDetails.getUserID());
+                editor.apply();
+
                 finish();
                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -110,7 +137,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<UserDetails> call, Throwable t) {
                 Toast.makeText(SignUpActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -208,7 +235,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 //                        if (task.isSuccessful()) {
 //                            Toast.makeText(SignUpActivity.this, "User Created.", Toast.LENGTH_SHORT).show();
 //  userID = fAuth.getCurrentUser().getUid();
-                               /* DocumentReference documentReference = fStore.collection("users").document(userID);
+/* DocumentReference documentReference = fStore.collection("users").document(userID);
                                 Map<String,Object> user = new HashMap<>();
                                 user.put("fName",fullName);
                                 user.put("email",email);

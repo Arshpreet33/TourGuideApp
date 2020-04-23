@@ -1,6 +1,8 @@
 package com.example.tourguideapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -17,14 +19,20 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Button btnLogin, btnRegister;
+    Button btnLogin;
     EditText txtEmail, txtPassword;
-    TextView lblLogin, txtForgotPasswordLink;
+    TextView lblRegister;
     Intent intent;
 
-//    private FirebaseAuth mAuth;
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
 
     DataServices service;
+
+    boolean isLogin;
+    int userID;
+
+//    private FirebaseAuth mAuth;
 
     //    FirebaseAuth fAuth;
 //    ProgressBar progressBar;
@@ -33,19 +41,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btnRegister = findViewById(R.id.btnRegister);
+        lblRegister = findViewById(R.id.lblRegister);
         btnLogin = findViewById(R.id.btnLogin);
-        txtEmail = findViewById(R.id.txtUserName);
-        txtPassword = findViewById(R.id.txtPassword);
-        txtForgotPasswordLink = findViewById(R.id.txtForgotPasswordLink);
-        lblLogin = findViewById(R.id.lblLogin);
+        txtEmail = findViewById(R.id.txtUserNameLogin);
+        txtPassword = findViewById(R.id.txtPasswordLogin);
+
 //        progressBar = findViewById(R.id.progressBar);
-//
 //        mAuth = FirebaseAuth.getInstance();
 
         btnLogin.setOnClickListener(this);
-        btnRegister.setOnClickListener(this);
-        txtForgotPasswordLink.setOnClickListener(this);
+        lblRegister.setOnClickListener(this);
+
+        sp = getSharedPreferences(MyVariables.cacheFile, Context.MODE_PRIVATE);
+
+        isLogin = sp.getBoolean(MyVariables.keyLoginAuth, MyVariables.defaultLoginAuth);
+        userID = sp.getInt(MyVariables.keyUserID, MyVariables.defaultUserID);
+
+        if (isLogin && userID > 0) {
+            finish();
+            intent = new Intent(getApplicationContext(), HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }
+
     }
 
     @Override
@@ -64,12 +82,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btnLogin:
                 btnLoginClick(v);
                 break;
-            case R.id.btnRegister:
+            case R.id.lblRegister:
                 intent = new Intent(MainActivity.this, SignUpActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.txtForgotPasswordLink:
-                intent = new Intent(MainActivity.this, ForgotPassword.class);
                 startActivity(intent);
                 break;
             default:
@@ -102,20 +116,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         service = RetrofitClientInstance.getRetrofitInstance().create(DataServices.class);
 
-        Call<String> call = service.executeLogin(loginDetails);
+        Call<UserDetails> call = service.executeLogin(loginDetails);
 
-        call.enqueue(new Callback<String>() {
+        call.enqueue(new Callback<UserDetails>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<UserDetails> call, Response<UserDetails> response) {
                 if (!response.isSuccessful()) {
                     Toast.makeText(MainActivity.this, response.code(), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if (!response.body().equals("Valid")) {
-                    Toast.makeText(MainActivity.this, response.body(), Toast.LENGTH_SHORT).show();
+                UserDetails userDetails = response.body();
+
+                if (!userDetails.getStr().equals("Valid")) {
+                    Toast.makeText(MainActivity.this, userDetails.getStr(), Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                editor = sp.edit();
+                editor.putBoolean(MyVariables.keyLoginAuth, true);
+                editor.putInt(MyVariables.keyUserID, userDetails.getUserID());
+                editor.apply();
+
                 finish();
                 intent = new Intent(getApplicationContext(), HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -123,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
+            public void onFailure(Call<UserDetails> call, Throwable t) {
                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

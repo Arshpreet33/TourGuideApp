@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="none"
+        android:menuCategory="container">
+
+        <item
+            android:id="@+id/menu_item_montreal"
+            android:title="Montreal" />
+        <item
+            android:id="@+id/menu_item_toronto"
+            android:enabled="true"
+            android:title="Toronto" />
+        <item
+            android:id="@+id/menu_item_new_york"
+            android:enabled="false"
+            android:title="New York" />
+
+    </group>
+
+    <group android:checkableBehavior="none"
+        android:menuCategory="container">
+
+        <item
+            android:id="@+id/menu_item_edit_profile"
+            android:title="Edit Profile" />
+        <item
+            android:id="@+id/menu_item_logout"
+            android:enabled="true"
+            android:title="Logout" />
+
+    </group>
+
+</menu>

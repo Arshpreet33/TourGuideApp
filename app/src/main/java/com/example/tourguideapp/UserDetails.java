@@ -22,6 +22,9 @@ public class UserDetails {
     @SerializedName("status")
     private boolean status;
 
+    @SerializedName("str")
+    private String str;
+
     public UserDetails(){
 
     }
@@ -83,5 +86,13 @@ public class UserDetails {
 
     public void setStatus(boolean status) {
         this.status = status;
+    }
+
+    public String getStr() {
+        return str;
+    }
+
+    public void setStr(String str) {
+        this.str = str;
     }
 }
