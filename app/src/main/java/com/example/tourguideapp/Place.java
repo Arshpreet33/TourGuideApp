@@ -1,8 +1,11 @@
 package com.example.tourguideapp;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class Place {
+public class Place implements Parcelable {
 
     @SerializedName("placeID")
     private int placeID;
@@ -28,7 +31,7 @@ public class Place {
     @SerializedName("str")
     private String str;
 
-    Place(){
+    Place() {
 
     }
 
@@ -40,6 +43,29 @@ public class Place {
         this.location = location;
         this.imageURL = imageURL;
     }
+
+    protected Place(Parcel in) {
+        placeID = in.readInt();
+        cityID = in.readInt();
+        name = in.readString();
+        description = in.readString();
+        location = in.readString();
+        imageURL = in.readString();
+        status = in.readByte() != 0;
+        str = in.readString();
+    }
+
+    public static final Creator<Place> CREATOR = new Creator<Place>() {
+        @Override
+        public Place createFromParcel(Parcel in) {
+            return new Place(in);
+        }
+
+        @Override
+        public Place[] newArray(int size) {
+            return new Place[size];
+        }
+    };
 
     /**
      * Getters and Setters
@@ -107,5 +133,22 @@ public class Place {
 
     public void setStr(String str) {
         this.str = str;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(placeID);
+        dest.writeInt(cityID);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeString(location);
+        dest.writeString(imageURL);
+        dest.writeByte((byte) (status ? 1 : 0));
+        dest.writeString(str);
     }
 }

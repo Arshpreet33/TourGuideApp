@@ -52,7 +52,7 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
 
         service = RetrofitClientInstance.getRetrofitInstance().create(DataServices.class);
 
-        Call<UserDetails> call = service.executeGetUserProfile(userID);
+        Call<UserDetails> call = service.executeGetUserProfileByID(userID);
 
         call.enqueue(new Callback<UserDetails>() {
             @Override
