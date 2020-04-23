@@ -6,19 +6,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.database.FirebaseDatabase;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -26,10 +21,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     TextView lblLogin;
     Button btnSignUp;
 
-    private FirebaseAuth mAuth;
-    //    FirebaseAuth fAuth;
-    ProgressBar progressBar;
-    //    FirebaseFirestore fStore;
+    DataServices service;
+
+//    private FirebaseAuth mAuth;
+//    ProgressBar progressBar;
+
     String userID;
 
     @Override
@@ -47,13 +43,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         btnSignUp.setOnClickListener(this);
         lblLogin.setOnClickListener(this);
 
-        mAuth = FirebaseAuth.getInstance();
-
-//        fStore = FirebaseFirestore.getInstance();
-//
-//        fAuth = FirebaseAuth.getInstance();
-        progressBar = findViewById(R.id.progressBar);
-
+//        mAuth = FirebaseAuth.getInstance();
+//        progressBar = findViewById(R.id.progressBar);
 
 //        if (fAuth.getCurrentUser() != null) {
 //            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
@@ -92,6 +83,39 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             txtPassword.setError("Password Must be >= 6 Characters");
             return;
         }
+
+        LoginDetails loginDetails = new LoginDetails(email, password);
+        loginDetails.setUser(new UserDetails(firstName, email, phone, ""));
+
+        service = RetrofitClientInstance.getRetrofitInstance().create(DataServices.class);
+
+        Call<String> call = service.executeSignUp(loginDetails);
+
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(SignUpActivity.this, response.code(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (response.body().equals("Already registered")) {
+                    Toast.makeText(SignUpActivity.this, "This email is already registered.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                finish();
+                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(SignUpActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        /*  Firebase Authentication Code - Commented!!!
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -143,9 +167,11 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                     }
 
                 });
-
+        */
     }
 }
+
+//  Commented superfluous code
 
 //        btnSignUp.setOnClickListener(new View.OnClickListener() {
 //            @Override

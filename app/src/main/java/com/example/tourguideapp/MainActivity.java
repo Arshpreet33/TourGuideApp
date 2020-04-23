@@ -6,17 +6,14 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -25,10 +22,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView lblLogin, txtForgotPasswordLink;
     Intent intent;
 
-    private FirebaseAuth mAuth;
+//    private FirebaseAuth mAuth;
+
+    DataServices service;
 
     //    FirebaseAuth fAuth;
-    ProgressBar progressBar;
+//    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +39,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txtPassword = findViewById(R.id.txtPassword);
         txtForgotPasswordLink = findViewById(R.id.txtForgotPasswordLink);
         lblLogin = findViewById(R.id.lblLogin);
-        progressBar = findViewById(R.id.progressBar);
-
-        mAuth = FirebaseAuth.getInstance();
+//        progressBar = findViewById(R.id.progressBar);
+//
+//        mAuth = FirebaseAuth.getInstance();
 
         btnLogin.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
@@ -53,9 +52,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onStart() {
         super.onStart();
 
-        if (mAuth.getCurrentUser() != null) {
-
-        }
+//        if (mAuth.getCurrentUser() != null) {
+//
+//        }
     }
 
     @Override
@@ -99,9 +98,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
 
-        progressBar.setVisibility(View.VISIBLE);
+        LoginDetails loginDetails = new LoginDetails(email, password);
 
-        // authenticate the user
+        service = RetrofitClientInstance.getRetrofitInstance().create(DataServices.class);
+
+        Call<String> call = service.executeLogin(loginDetails);
+
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(MainActivity.this, response.code(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!response.body().equals("Valid")) {
+                    Toast.makeText(MainActivity.this, response.body(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                finish();
+                intent = new Intent(getApplicationContext(), HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        /*  Firebase Authentication Code - Commented!!!
+
+        progressBar.setVisibility(View.VISIBLE);
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -119,5 +149,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
+         */
     }
 }
