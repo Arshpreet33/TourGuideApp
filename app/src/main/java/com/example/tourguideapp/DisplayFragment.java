@@ -1,58 +1,42 @@
 package com.example.tourguideapp;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DisplayFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class DisplayFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private TextView placeName, placeLocation, placeDescription;
+    private ImageView placeImage;
+
+    private Place place;
+//    private ArrayList<Place> placeList;
 
     public DisplayFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DisplayFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static DisplayFragment newInstance(String param1, String param2) {
-        DisplayFragment fragment = new DisplayFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -60,5 +44,64 @@ public class DisplayFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_display, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+
+        place = getArguments().getParcelable("place");
+
+        placeName = getActivity().findViewById(R.id.place_name);
+        placeLocation = getActivity().findViewById(R.id.place_location);
+        placeDescription = getActivity().findViewById(R.id.place_description);
+        placeImage = getActivity().findViewById(R.id.place_image);
+
+        getPlaceDetails(place.getPlaceID());
+    }
+
+    private void fillData() {
+
+        placeName.setText(place.getName());
+        placeLocation.setText(place.getLocation());
+        placeDescription.setText(place.getDescription());
+
+        Picasso.get().load(place.getImageURL()).into(placeImage);
+    }
+
+    private void getPlaceDetails(int ID) {
+
+        DataServices service = RetrofitClientInstance.getRetrofitInstance().create(DataServices.class);
+
+        Call<Place> call = service.executeGetPlacesByID(ID);
+
+        call.enqueue(new Callback<Place>() {
+            @Override
+            public void onResponse(Call<Place> call, Response<Place> response) {
+                if (!response.isSuccessful()) {
+                    Toast.makeText(getActivity().getApplicationContext(), response.code(), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                try {
+//                    Places places = response.body();
+//                    placeList = new ArrayList<>(places.getPlaceList());
+
+                    place =response.body();
+
+                    fillData();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Place> call, Throwable t) {
+                Toast.makeText(getActivity().getApplicationContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
