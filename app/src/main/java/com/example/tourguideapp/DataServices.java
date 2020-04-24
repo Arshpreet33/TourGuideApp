@@ -21,12 +21,17 @@ public interface DataServices {
     @GET("/user/edit/{userID}")
     Call<UserDetails> executeGetUserProfileByID(@Path(value = "userID", encoded = true) int userID);
 
-    @GET("/place/search")
-    Call<Places> executeSearchPlaces(
-            @Query("str") String strPlace,
-            @Query("city") int cityID
-    );
+    @POST("/place/search")
+    Call<Places> executeSearchPlaces(@Body Place place);
 
+//    @GET("/place/search/{strPlace}/{cityID}")
+//    Call<Places> executeSearchPlaces(@Path(value = "strPlace", encoded = true) String strPlace,
+//                                     @Path(value = "cityID", encoded = true) int cityID);
+//    @GET("/place/search")
+//    Call<Places> executeSearchPlaces(
+//            @Query("str") String strPlace,
+//            @Query("city") int cityID
+//    );
     @GET("/place/{placeID}")
     Call<Place> executeGetPlacesByID(@Path(value = "placeID", encoded = true) int placeID);
 

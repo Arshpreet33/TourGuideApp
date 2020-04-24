@@ -26,6 +26,7 @@ public class MontrealFragment extends Fragment implements View.OnClickListener {
 
     EditText txtSearchDrink;
     Button btnSearch;
+    int cityID;
 
     private ArrayList<Place> placeList;
 
@@ -63,13 +64,14 @@ public class MontrealFragment extends Fragment implements View.OnClickListener {
 
         btnSearch.setOnClickListener(this);
 
+        cityID = 1;
         getAllPlaces();
     }
 
     private void getAllPlaces() {
         service = RetrofitClientInstance.getRetrofitInstance().create(DataServices.class);
 
-        Call<Places> call = service.executeGetPlacesByCityID(1);
+        Call<Places> call = service.executeGetPlacesByCityID(cityID);
 
         call.enqueue(new Callback<Places>() {
             @Override
@@ -110,7 +112,10 @@ public class MontrealFragment extends Fragment implements View.OnClickListener {
 
         service = RetrofitClientInstance.getRetrofitInstance().create(DataServices.class);
 
-        Call<Places> call = service.executeSearchPlaces(searchedText, 1);
+        Place place = new Place();
+        place.setCityID(cityID);
+        place.setStr(searchedText);
+        Call<Places> call = service.executeSearchPlaces(place);
 
         call.enqueue(new Callback<Places>() {
             @Override
@@ -155,5 +160,4 @@ public class MontrealFragment extends Fragment implements View.OnClickListener {
             }
         });
     }
-
 }
