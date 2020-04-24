@@ -33,6 +33,6 @@
     <fragment
         android:id="@+id/changePasswordFragment"
         android:name="com.example.tourguideapp.ChangePasswordFragment"
-        android:label="fragment_change_password"
+        android:label="Change Password"
         tools:layout="@layout/fragment_change_password" />
 </navigation>
