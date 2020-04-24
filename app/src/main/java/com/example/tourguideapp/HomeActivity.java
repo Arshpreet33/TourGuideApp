@@ -93,6 +93,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.menu_item_edit_profile:
                 navController.navigate(R.id.editProfileFragment);
                 break;
+            case R.id.menu_item_change_password:
+                navController.navigate(R.id.changePasswordFragment);
+                break;
             case R.id.menu_item_logout:
                 logout();
                 break;

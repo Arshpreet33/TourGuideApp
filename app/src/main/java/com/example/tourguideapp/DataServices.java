@@ -21,6 +21,9 @@ public interface DataServices {
     @GET("/user/edit/{userID}")
     Call<UserDetails> executeGetUserProfileByID(@Path(value = "userID", encoded = true) int userID);
 
+    @POST("/user/password")
+    Call<ChangePassword> executeEditUserPassword(@Body ChangePassword changePassword);
+
     @POST("/place/search")
     Call<Places> executeSearchPlaces(@Body Place place);
 

@@ -25,6 +25,7 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/card_image"
                 android:layout_width="110dp"
+                android:layout_margin="0dp"
                 android:layout_height="110dp" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -32,16 +33,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="35dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
                 android:layout_toRightOf="@id/card_image"
                 android:text="Heading"
-                android:textSize="30sp" />
+                android:textSize="24sp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/card_body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:layout_below="@id/card_title"
                 android:layout_toRightOf="@id/card_image"
                 android:text="This is the description \n Another description"

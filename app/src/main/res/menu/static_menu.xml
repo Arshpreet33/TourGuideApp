@@ -14,7 +14,7 @@
         <item
             android:id="@+id/menu_item_new_york"
             android:enabled="false"
-            android:title="New York" />
+            android:title="Vancouver - coming soon" />
 
     </group>
 
@@ -24,6 +24,9 @@
         <item
             android:id="@+id/menu_item_edit_profile"
             android:title="Edit Profile" />
+        <item
+            android:id="@+id/menu_item_change_password"
+            android:title="Change Password" />
         <item
             android:id="@+id/menu_item_logout"
             android:enabled="true"
