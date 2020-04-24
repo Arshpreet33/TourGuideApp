@@ -25,6 +25,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public NavController navController;
     public NavigationView navigationView;
 
+    static int userID;
+
     Intent intent;
     SharedPreferences sp;
     SharedPreferences.Editor editor;
@@ -48,7 +50,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private boolean validateLogin() {
         sp = getSharedPreferences(MyVariables.cacheFile, Context.MODE_PRIVATE);
         boolean isLogin = sp.getBoolean(MyVariables.keyLoginAuth, MyVariables.defaultLoginAuth);
-        int userID = sp.getInt(MyVariables.keyUserID, MyVariables.defaultUserID);
+        userID = sp.getInt(MyVariables.keyUserID, MyVariables.defaultUserID);
 
         if (isLogin && userID > 0) {
             return true;

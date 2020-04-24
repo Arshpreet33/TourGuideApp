@@ -28,15 +28,15 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
-
-        txtName = findViewById(R.id.txtNameProfile);
-        txtAddress = findViewById(R.id.txtAddressProfile);
-        txtPhone = findViewById(R.id.txtPhoneProfile);
-        btnSaveProfile = findViewById(R.id.btnSaveProfile);
-        btnCancelProfile = findViewById(R.id.btnCancelProfile);
-
-        btnSaveProfile.setOnClickListener(this);
-        btnCancelProfile.setOnClickListener(this);
+//
+//        txtName = findViewById(R.id.txtNameProfile);
+//        txtAddress = findViewById(R.id.txtAddressProfile);
+//        txtPhone = findViewById(R.id.txtPhoneProfile);
+//        btnSaveProfile = findViewById(R.id.btnSaveProfile);
+//        btnCancelProfile = findViewById(R.id.btnCancelProfile);
+//
+//        btnSaveProfile.setOnClickListener(this);
+//        btnCancelProfile.setOnClickListener(this);
 
         if (!validateLogin()) {
             Toast.makeText(this, "Login to continue", Toast.LENGTH_SHORT).show();
@@ -91,14 +91,14 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btnCancelProfile) {
-            finish();
-            intent = new Intent(getApplicationContext(), HomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-        } else if (v.getId() == R.id.btnSaveProfile) {
-            btnSaveProfileClick(v);
-        }
+//        if (v.getId() == R.id.btnCancelProfile) {
+//            finish();
+//            intent = new Intent(getApplicationContext(), HomeActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//            startActivity(intent);
+//        } else if (v.getId() == R.id.btnSaveProfile) {
+//            btnSaveProfileClick(v);
+//        }
     }
 
     private void btnSaveProfileClick(View v) {

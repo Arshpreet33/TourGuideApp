@@ -68,7 +68,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.Recycl
 
         Place currentPlace = placeList.get(position);
 
-        holder.txtBody.setText(currentPlace.getDescription());
+        holder.txtBody.setText(currentPlace.getLocation());
         holder.txtTitle.setText(currentPlace.getName());
         Picasso.get().load(currentPlace.getImageURL()).into(holder.image);
     }

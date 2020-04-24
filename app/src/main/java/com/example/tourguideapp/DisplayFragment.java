@@ -11,12 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -89,7 +85,7 @@ public class DisplayFragment extends Fragment {
 //                    Places places = response.body();
 //                    placeList = new ArrayList<>(places.getPlaceList());
 
-                    place =response.body();
+                    place = response.body();
 
                     fillData();
 
